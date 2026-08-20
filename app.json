@@ -8,8 +8,8 @@
     "scheme": "plutxus",
     "userInterfaceStyle": "automatic",
     "backgroundColor": "#0B0B0D",
-    "newArchEnabled": true,
     "ios": {
+
       "supportsTablet": true,
       "bundleIdentifier": "com.plutxus.app",
       "infoPlist": {
@@ -47,7 +47,8 @@
           "forceCxx20": true,
           "enableOpenCLAndHexagon": true
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
