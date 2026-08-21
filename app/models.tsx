@@ -20,7 +20,10 @@ export default function ModelsScreen() {
   const setActiveModel = useAppStore((s) => s.setActiveModel);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+      edges={['top', 'bottom']}
+    >
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={22} color={colors.text} />
@@ -32,6 +35,7 @@ export default function ModelsScreen() {
       </View>
 
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={MODEL_CATALOG}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingVertical: 12 }}

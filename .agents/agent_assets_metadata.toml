@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "Oy42TktjidD9m4cEV9jSq"
+uri = "file://artifacts/plutxus-preview-arm64.apk"
+type = "unspecified"
+title = "Plutxus — APK Android (arm64)"
+description = "APK de distribución interna firmado por EAS. Incluye el motor llama.rn para inferencia por CPU en teléfonos Android arm64."
+logical_id = "0b9c5c82-0e4b-4595-9bb2-cc96175fe13c"
+content_hash = "sha256:61ddc110b2ac267c9ee52a465f3b57dfea171799f2b33a35bdd1d6e694a74b51"
+size = 58810842
+mtime_ms = 1787306400552
+storage_uri = "gcs://replit-rams-assets-reed/rams/assets/repl:bf178e6c-827f-4df9-9a6b-80c9ed6d5788/0b9c5c82-0e4b-4595-9bb2-cc96175fe13c/d3eeb2ee-72e6-497c-9802-f86979aecbbe"
+storage_version_token = "1787306453911095"
+content_type = "application/octet-stream"

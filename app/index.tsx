@@ -18,6 +18,7 @@ import { strings } from '../constants/strings';
 import { useChatStore } from '../store/useChatStore';
 import { useThemeColors } from '../store/useThemeColors';
 import { useAppStore } from '../store/useAppStore';
+import { StarField } from '../components/StarField';
 
 export default function ChatScreen() {
   const colors = useThemeColors();
@@ -44,91 +45,105 @@ export default function ChatScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => setSidebarOpen(true)}>
-          <Ionicons name="menu" size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>
-          {strings.appName}
-        </Text>
-        <TouchableOpacity onPress={() => createNewChat()}>
-          <Ionicons name="create-outline" size={22} color={colors.text} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Body */}
-      {messages.length === 0 ? (
-        <View style={styles.emptyState}>
-          <View style={[styles.avatarCircle, { backgroundColor: colors.primary }]}>
-            <Text style={styles.avatarEmoji}>🦎</Text>
-          </View>
-          <Text style={[styles.emptyText, { color: colors.text }]}>
-            {strings.chat.emptyStateTitle}
-          </Text>
-          {!activeModelId && (
-            <Text style={[styles.emptyHint, { color: colors.textSecondary }]}>
-              {strings.chat.noModelDownloaded}
-            </Text>
-          )}
-        </View>
-      ) : (
-        <FlatList
-          ref={listRef}
-          data={messages}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <MessageBubble message={item} />}
-          contentContainerStyle={{ paddingVertical: 12 }}
-          onContentSizeChange={() =>
-            listRef.current?.scrollToEnd({ animated: true })
-          }
-        />
-      )}
-
-      {isModelLoading && (
-        <View style={styles.loadingBanner}>
-          <Text style={{ color: colors.textSecondary, fontSize: 12 }}>
-            Cargando modelo...
-          </Text>
-        </View>
-      )}
-
-      {/* Input */}
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+      edges={['top', 'bottom']}
+    >
       <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <View
-          style={[
-            styles.inputBar,
-            { backgroundColor: colors.surface, borderColor: colors.border },
-          ]}
-        >
-          <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="attach" size={20} color={colors.textSecondary} />
-          </TouchableOpacity>
+        <StarField />
+        <View style={styles.content}>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => setSidebarOpen(true)}>
+              <Ionicons name="menu" size={24} color={colors.text} />
+            </TouchableOpacity>
+            <Text style={[styles.headerTitle, { color: colors.text }]}>plutxus</Text>
+            <TouchableOpacity onPress={() => createNewChat()}>
+              <Ionicons name="create-outline" size={22} color={colors.text} />
+            </TouchableOpacity>
+          </View>
 
-          <TextInput
-            style={[styles.input, { color: colors.text }]}
-            placeholder={strings.chat.inputPlaceholder}
-            placeholderTextColor={colors.textMuted}
-            value={input}
-            onChangeText={setInput}
-            multiline
-          />
+          {/* Body */}
+          {messages.length === 0 ? (
+            <View style={styles.emptyState}>
+              <View style={styles.mascot}>
+                <View style={styles.mascotGlow} />
+                <View style={styles.mascotBody}>
+                  <View style={styles.mascotEye} />
+                  <View style={[styles.mascotEye, { marginLeft: 10 }]} />
+                </View>
+                <View style={styles.mascotTail} />
+              </View>
+              <Text style={[styles.emptyText, { color: colors.text }]}>
+                {strings.chat.emptyStateTitle}
+              </Text>
+              {!activeModelId && (
+                <Text style={[styles.emptyHint, { color: colors.textSecondary }]}>
+                  {strings.chat.noModelDownloaded}
+                </Text>
+              )}
+            </View>
+          ) : (
+            <FlatList
+              ref={listRef}
+              style={styles.messageList}
+              data={messages}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => <MessageBubble message={item} />}
+              contentContainerStyle={{ paddingVertical: 12 }}
+              onContentSizeChange={() =>
+                listRef.current?.scrollToEnd({ animated: true })
+              }
+            />
+          )}
 
-          <ModelSelector />
+          {isModelLoading && (
+            <View style={styles.loadingBanner}>
+              <Text style={{ color: colors.textSecondary, fontSize: 12 }}>
+                Cargando modelo...
+              </Text>
+            </View>
+          )}
 
-          <TouchableOpacity
+          {/* Input */}
+          <View
             style={[
-              styles.sendButton,
-              { backgroundColor: input.trim() ? colors.primary : colors.border },
+              styles.inputBar,
+              { backgroundColor: colors.surface, borderColor: colors.border },
             ]}
-            onPress={handleSend}
-            disabled={!input.trim() || isGenerating}
           >
-            <Ionicons name="arrow-up" size={18} color="#fff" />
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton} onPress={() => {}}>
+              <Ionicons name="attach" size={20} color={colors.textSecondary} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton} onPress={() => {}}>
+              <Ionicons name="globe-outline" size={18} color={colors.textSecondary} />
+            </TouchableOpacity>
+
+            <TextInput
+              style={[styles.input, { color: colors.text }]}
+              placeholder={strings.chat.inputPlaceholder}
+              placeholderTextColor={colors.textMuted}
+              value={input}
+              onChangeText={setInput}
+              multiline
+            />
+
+            <ModelSelector />
+
+            <TouchableOpacity
+              style={[
+                styles.sendButton,
+                { backgroundColor: input.trim() ? colors.primary : colors.border },
+              ]}
+              onPress={handleSend}
+              disabled={!input.trim() || isGenerating}
+            >
+              <Ionicons name="arrow-up" size={18} color="#fff" />
+            </TouchableOpacity>
+          </View>
         </View>
       </KeyboardAvoidingView>
 
@@ -139,6 +154,16 @@ export default function ChatScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    position: 'relative',
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+  },
+  messageList: {
     flex: 1,
   },
   header: {
@@ -157,17 +182,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 32,
-    gap: 16,
+    gap: 14,
   },
-  avatarCircle: {
-    width: 84,
-    height: 84,
-    borderRadius: 42,
+  mascot: {
+    width: 120, height: 120, alignItems: 'center', justifyContent: 'center',
+    position: 'relative',
+  },
+  mascotGlow: {
+    position: 'absolute', width: 110, height: 110, borderRadius: 55,
+    backgroundColor: '#403563', opacity: 0.28,
+  },
+  mascotBody: {
+    width: 68, height: 84, borderRadius: 38, backgroundColor: '#C4B7FF',
     alignItems: 'center',
     justifyContent: 'center',
+    transform: [{ rotate: '-8deg' }],
   },
-  avatarEmoji: {
-    fontSize: 40,
+  mascotEye: {
+    width: 7, height: 7, borderRadius: 4, backgroundColor: '#171529',
+    marginLeft: -10, marginTop: -8,
+  },
+  mascotTail: {
+    position: 'absolute', width: 34, height: 50, borderLeftWidth: 8,
+    borderBottomWidth: 8, borderColor: '#A99AE8', borderBottomLeftRadius: 26,
+    left: 18, bottom: 12, transform: [{ rotate: '18deg' }],
   },
   emptyText: {
     fontSize: 18,

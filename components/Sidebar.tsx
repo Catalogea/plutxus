@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { strings } from '../constants/strings';
 import { useChatStore } from '../store/useChatStore';
 import { useThemeColors } from '../store/useThemeColors';
@@ -38,15 +39,16 @@ export function Sidebar({ visible, onClose }: Props) {
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.overlayRow}>
-        <View style={[styles.sidebar, { backgroundColor: colors.surface }]}>
+        <SafeAreaView
+          style={[styles.sidebar, { backgroundColor: colors.surface }]}
+          edges={['top', 'bottom']}
+        >
           {/* Header */}
           <View style={styles.header}>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="menu" size={24} color={colors.text} />
             </TouchableOpacity>
-            <Text style={[styles.appName, { color: colors.text }]}>
-              {strings.appName}
-            </Text>
+            <Text style={[styles.appName, { color: colors.text }]}>plutxus</Text>
             <TouchableOpacity
               onPress={() => {
                 createNewChat();
@@ -70,9 +72,12 @@ export function Sidebar({ visible, onClose }: Props) {
                 router.push('/models');
               }}
             >
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>
-                {strings.sidebar.models}
-              </Text>
+              <View style={styles.sectionLabel}>
+                <Ionicons name="cube-outline" size={17} color={colors.textSecondary} />
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                  {strings.sidebar.models}
+                </Text>
+              </View>
               <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} />
             </TouchableOpacity>
 
@@ -81,9 +86,12 @@ export function Sidebar({ visible, onClose }: Props) {
               style={styles.sectionRow}
               onPress={() => setProjectsExpanded((v) => !v)}
             >
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>
-                {strings.sidebar.projects}
-              </Text>
+              <View style={styles.sectionLabel}>
+                <Ionicons name="folder-outline" size={17} color={colors.textSecondary} />
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                  {strings.sidebar.projects}
+                </Text>
+              </View>
               <View style={styles.rowRight}>
                 <TouchableOpacity hitSlop={8}>
                   <Ionicons name="add" size={18} color={colors.textSecondary} />
@@ -106,9 +114,12 @@ export function Sidebar({ visible, onClose }: Props) {
               style={styles.sectionRow}
               onPress={() => setChatsExpanded((v) => !v)}
             >
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>
-                {strings.sidebar.chats}
-              </Text>
+              <View style={styles.sectionLabel}>
+                <Ionicons name="chatbubble-outline" size={17} color={colors.textSecondary} />
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                  {strings.sidebar.chats}
+                </Text>
+              </View>
               <Ionicons
                 name={chatsExpanded ? 'chevron-down' : 'chevron-forward'}
                 size={16}
@@ -161,7 +172,7 @@ export function Sidebar({ visible, onClose }: Props) {
                       <TouchableOpacity
                         style={styles.chatMenuItem}
                         onPress={() => {
-                          renameCurrentChat(chat.id, `${chat.title} ✏️`);
+                           renameCurrentChat(chat.id, `${chat.title} · editado`);
                           setMenuOpenFor(null);
                         }}
                       >
@@ -204,7 +215,7 @@ export function Sidebar({ visible, onClose }: Props) {
             </Text>
             <Ionicons name="settings-outline" size={20} color={colors.textSecondary} />
           </TouchableOpacity>
-        </View>
+        </SafeAreaView>
 
         <Pressable style={{ flex: 1 }} onPress={onClose} />
       </View>
@@ -219,9 +230,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   sidebar: {
-    width: '78%',
+    width: '68%',
     maxWidth: 320,
-    paddingTop: 56,
+    paddingTop: 8,
   },
   header: {
     flexDirection: 'row',
@@ -244,6 +255,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
+  },
+  sectionLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 9,
   },
   rowRight: {
     flexDirection: 'row',
@@ -295,7 +311,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#7C5CFC',
+    backgroundColor: '#8C7BC9',
     alignItems: 'center',
     justifyContent: 'center',
   },

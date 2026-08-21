@@ -1,0 +1,42 @@
+modules = ["nodejs-20"]
+
+[nix]
+channel = "stable-25_05"
+
+[agent]
+expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start Expo"
+
+[[workflows.workflow]]
+name = "Start Expo"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+mkdir -p /tmp/expo-no-browser && printf '#!/bin/sh
+exit 0
+' > /tmp/expo-no-browser/xdg-open && chmod +x /tmp/expo-no-browser/xdg-open && PATH=\"/tmp/expo-no-browser:$PATH\" yarn web --port 5000"""
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
+
+[[ports]]
+localPort = 8081
+externalPort = 80

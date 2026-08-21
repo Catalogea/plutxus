@@ -17,11 +17,13 @@ import { AppearanceMode, AppLanguage } from '../types';
 
 function SectionHeader({
   title,
+  icon,
   expanded,
   onToggle,
   collapsible = true,
 }: {
   title: string;
+  icon: 'sunny-outline' | 'language-outline' | 'person-outline' | 'options-outline' | 'key-outline';
   expanded?: boolean;
   onToggle?: () => void;
   collapsible?: boolean;
@@ -34,9 +36,10 @@ function SectionHeader({
       disabled={!collapsible}
       activeOpacity={collapsible ? 0.6 : 1}
     >
-      <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>
-        {title}
-      </Text>
+      <View style={styles.sectionLabel}>
+        <Ionicons name={icon} size={18} color={colors.text} />
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>{title}</Text>
+      </View>
       {collapsible && (
         <Ionicons
           name={expanded ? 'chevron-down' : 'chevron-forward'}
@@ -83,7 +86,10 @@ export default function SettingsScreen() {
   ];
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: colors.background }]}
+        edges={['top', 'bottom']}
+      >
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={22} color={colors.text} />
@@ -94,9 +100,13 @@ export default function SettingsScreen() {
         <View style={{ width: 22 }} />
       </View>
 
-      <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
         {/* Apariencia */}
-        <SectionHeader title={strings.settings.appearance} collapsible={false} />
+        <SectionHeader
+          title={strings.settings.appearance}
+          icon="sunny-outline"
+          collapsible={false}
+        />
         <View style={styles.segmentRow}>
           {appearanceOptions.map((opt) => (
             <TouchableOpacity
@@ -125,7 +135,11 @@ export default function SettingsScreen() {
         </View>
 
         {/* Idioma */}
-        <SectionHeader title={strings.settings.language} collapsible={false} />
+        <SectionHeader
+          title={strings.settings.language}
+          icon="language-outline"
+          collapsible={false}
+        />
         <View style={styles.segmentRow}>
           {languageOptions.map((opt) => (
             <TouchableOpacity
@@ -157,15 +171,17 @@ export default function SettingsScreen() {
               { backgroundColor: colors.surface, borderColor: colors.border },
             ]}
           >
-            <Text style={{ color: colors.text, fontSize: 13, fontWeight: '600' }}>
-              {strings.settings.more} ▾
+              <Text style={{ color: colors.text, fontSize: 13, fontWeight: '600' }}>
+              {strings.settings.more}
             </Text>
+            <Ionicons name="chevron-down" size={14} color={colors.textSecondary} />
           </TouchableOpacity>
         </View>
 
         {/* Sobre Ti */}
         <SectionHeader
           title={`${strings.settings.aboutYou} · ${strings.settings.aboutYouSubtitle}`}
+          icon="person-outline"
           expanded={aboutYouExpanded}
           onToggle={() => setAboutYouExpanded((v) => !v)}
         />
@@ -223,6 +239,7 @@ export default function SettingsScreen() {
         {/* Modelos */}
         <SectionHeader
           title={strings.settings.models}
+          icon="options-outline"
           expanded={modelsExpanded}
           onToggle={() => setModelsExpanded((v) => !v)}
         />
@@ -239,6 +256,7 @@ export default function SettingsScreen() {
         {/* API Keys */}
         <SectionHeader
           title={strings.settings.apiKeys}
+          icon="key-outline"
           expanded={apiKeysExpanded}
           onToggle={() => setApiKeysExpanded((v) => !v)}
         />
@@ -253,16 +271,25 @@ export default function SettingsScreen() {
         {/* Ítems simples */}
         <View style={{ marginTop: 12 }}>
           <TouchableOpacity style={styles.linkRow}>
-            <Text style={{ color: colors.text }}>{strings.settings.meetCreator}</Text>
+            <View style={styles.linkLabel}>
+              <Ionicons name="sparkles-outline" size={18} color={colors.text} />
+              <Text style={{ color: colors.text }}>{strings.settings.meetCreator}</Text>
+            </View>
             <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.linkRow}>
-            <Text style={{ color: colors.text }}>{strings.settings.supportProject}</Text>
+            <View style={styles.linkLabel}>
+              <Ionicons name="heart-outline" size={18} color={colors.text} />
+              <Text style={{ color: colors.text }}>{strings.settings.supportProject}</Text>
+            </View>
             <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.linkRow}>
-            <Text style={{ color: colors.text }}>{strings.settings.rateApp}</Text>
-            <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} />
+            <View style={styles.linkLabel}>
+              <Ionicons name="star-outline" size={18} color={colors.text} />
+              <Text style={{ color: colors.text }}>{strings.settings.rateApp}</Text>
+            </View>
+            <Ionicons name="open-outline" size={16} color={colors.textSecondary} />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -284,6 +311,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
+    letterSpacing: 0.2,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -293,16 +321,20 @@ const styles = StyleSheet.create({
     paddingTop: 18,
     paddingBottom: 8,
   },
+  sectionLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
   },
   segmentRow: {
     flexDirection: 'row',
     gap: 8,
     paddingHorizontal: 16,
+    flexWrap: 'wrap',
   },
   segmentButton: {
     paddingHorizontal: 14,
@@ -335,5 +367,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 14,
+  },
+  linkLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
 });

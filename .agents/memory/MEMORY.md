@@ -1,0 +1,2 @@
+- [Android builds with llama.rn](llama-rn-android-builds.md) — remote EAS builds need a narrowed JNI variant to stay below the build time limit.
+- [Expo web preview](expo-web-preview.md) — native modules need web adapters and the Replit proxy origin must be allowed dynamically.

@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 14,
     borderWidth: StyleSheet.hairlineWidth,
-    maxWidth: 140,
+    maxWidth: 132,
+    backgroundColor: 'rgba(255,255,255,0.03)',
   },
   triggerText: {
     fontSize: 13,
